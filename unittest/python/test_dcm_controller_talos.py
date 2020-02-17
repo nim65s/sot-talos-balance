@@ -8,6 +8,9 @@ from rospkg import RosPack
 import sot_talos_balance.talos.parameter_server_conf as param_server_conf
 from sot_talos_balance.create_entities_utils import DcmController, create_parameter_server
 
+import eigenpy
+eigenpy.switchToNumpyMatrix()
+
 # --- General ---
 print("--- General ---")
 

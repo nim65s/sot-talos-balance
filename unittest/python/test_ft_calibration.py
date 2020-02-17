@@ -4,6 +4,9 @@ from numpy.testing import assert_almost_equal as assertApprox
 import sot_talos_balance.talos.ft_calibration_conf as conf
 from sot_talos_balance.ft_calibration import FtCalibration
 
+import eigenpy
+eigenpy.switchToNumpyMatrix()
+
 robot_name = 'robot'
 ftc = FtCalibration('ftc')
 ftc.init(robot_name)
