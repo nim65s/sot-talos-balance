@@ -7,6 +7,8 @@
 #include "sot/core/parameter-server.hh"
 #include "sot/talos_balance/distribute-wrench.hh"
 
+#include <example-robot-data/path.hpp>
+
 #include <boost/test/unit_test.hpp>
 
 #include "test-paths.h"
@@ -35,7 +37,7 @@ BOOST_AUTO_TEST_CASE(test_distribute) {
 
   std::cout << "q: " << q.transpose() << std::endl;
 
-  std::string urdfPath = TALOS_DATA_MODEL_DIR "urdf/talos_reduced.urdf";
+  std::string urdfPath = EXAMPLE_ROBOT_DATA_MODEL_DIR "/talos_data/robots/talos_reduced.urdf";
 
   pinocchio::Model model;
   pinocchio::urdf::buildModel(urdfPath, pinocchio::JointModelFreeFlyer(), model);
