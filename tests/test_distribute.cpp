@@ -1,10 +1,11 @@
+#include <pinocchio/fwd.hpp>
+#include "sot/core/robot-utils.hh"
 #include "pinocchio/multibody/model.hpp"
 #include "pinocchio/parsers/urdf.hpp"
 #include "pinocchio/multibody/data.hpp"
 #include "pinocchio/algorithm/center-of-mass.hpp"
 #include "pinocchio/algorithm/frames.hpp"
 
-#include "sot/core/parameter-server.hh"
 #include "sot/talos_balance/distribute-wrench.hh"
 
 #include <example-robot-data/path.hpp>
@@ -12,6 +13,7 @@
 #include <boost/test/unit_test.hpp>
 
 #include "test-paths.h"
+#include "sot/core/parameter-server.hh"
 
 using namespace dynamicgraph::sot;
 using namespace dynamicgraph::sot::talos_balance;
