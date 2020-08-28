@@ -3,13 +3,14 @@
 Created on Mon Feb  9 13:55:16 2015
 @author: adelpret
 """
-from rospkg import RosPack
 
-rospack = RosPack()
+from os.path import join
+
+from example_robot_data.path import EXAMPLE_ROBOT_DATA_MODEL_DIR
 
 NJ = 32
-model_path = [rospack.get_path('talos_data') + "/../"]
-urdfFileName = rospack.get_path('talos_data') + "/urdf/talos_reduced.urdf"
+model_path = [EXAMPLE_ROBOT_DATA_MODEL_DIR]
+urdfFileName = join(EXAMPLE_ROBOT_DATA_MODEL_DIR, "talos_data/robots/talos_reduced.urdf")
 ImuJointName = "imu_joint"
 
 mapJointNameToID = {
@@ -85,10 +86,7 @@ mapJointLimits = {
 vfMax = [100.0, 100.0, 300.0, 80.0, 80.0, 30.0]
 vfMin = [-100.0, -100.0, -300.0, -80.0, -80.0, -30.0]
 
-mapForceIdToForceLimits = {0: [vfMin, vfMax],
-                           1: [vfMin, vfMax],
-                           2: [vfMin, vfMax],
-                           3: [vfMin, vfMax]}
+mapForceIdToForceLimits = {0: [vfMin, vfMax], 1: [vfMin, vfMax], 2: [vfMin, vfMax], 3: [vfMin, vfMax]}
 
 mapNameToForceId = {"rf": 0, "lf": 1, "rh": 2, "lh": 3}
 
