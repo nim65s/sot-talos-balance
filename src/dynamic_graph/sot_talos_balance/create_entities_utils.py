@@ -86,7 +86,7 @@ def create_extend_mix(n_in, n_out):
 def create_scalar_trajectory_generator(dt, init_value, name):
     trajGen = NdTrajectoryGenerator(name)
     trajGen.initial_value.value = [init_value]
-    trajGen.trigger.value = 1.0
+    trajGen.trigger.value = 1
     trajGen.init(dt, 1)
     return trajGen
 
@@ -94,7 +94,7 @@ def create_scalar_trajectory_generator(dt, init_value, name):
 def create_joint_trajectory_generator(dt, robot):
     jtg = NdTrajectoryGenerator("jtg")
     jtg.initial_value.value = robot.device.state.value[6:]
-    jtg.trigger.value = 1.0
+    jtg.trigger.value = 1
     jtg.init(dt, N_JOINTS)
     return jtg
 
@@ -103,7 +103,7 @@ def create_config_trajectory_generator(dt, robot):
     N_CONFIG = N_JOINTS + 6
     jtg = NdTrajectoryGenerator("jtg")
     jtg.initial_value.value = robot.device.state.value
-    jtg.trigger.value = 1.0
+    jtg.trigger.value = 1
     jtg.init(dt, N_CONFIG)
     return jtg
 
@@ -112,7 +112,7 @@ def create_torque_trajectory_generator(dt, robot):
     N_CONFIG = N_JOINTS + 6
     jtg = NdTrajectoryGenerator("torqueTrajGen")
     jtg.initial_value.value = [0.] * N_CONFIG
-    jtg.trigger.value = 1.0
+    jtg.trigger.value = 1
     jtg.init(dt, N_CONFIG)
     return jtg
 
@@ -120,7 +120,7 @@ def create_torque_trajectory_generator(dt, robot):
 def create_com_trajectory_generator(dt, robot):
     comTrajGen = NdTrajectoryGenerator("comTrajGen")
     comTrajGen.initial_value.value = robot.dynamic.com.value
-    comTrajGen.trigger.value = 1.0
+    comTrajGen.trigger.value = 1
     comTrajGen.init(dt, 3)
     return comTrajGen
 
@@ -129,8 +129,8 @@ def create_zmp_trajectory_generator(dt, robot):
     comTrajGen = NdTrajectoryGenerator("zmpTrajGen")
     zmp = list(robot.dynamic.com.value)
     zmp[2] = 0.0
-    comTrajGen.initial_value.value = zmp
-    comTrajGen.trigger.value = 1.0
+    comTrajGen.initial_value.value = np.array(zmp)
+    comTrajGen.trigger.value = 1
     comTrajGen.init(dt, 3)
     return comTrajGen
 
@@ -142,7 +142,7 @@ def create_position_trajectory_generator(dt, robot, signal_name):
     v = [M[i][3] for i in range(3)]
     trajGen.initial_value.value = v
 
-    trajGen.trigger.value = 1.0
+    trajGen.trigger.value = 1
     trajGen.init(dt, 3)
     return trajGen
 
@@ -152,9 +152,9 @@ def create_orientation_rpy_trajectory_generator(dt, robot, signal_name):
 
     M = robot.dynamic.signal(signal_name).value
     v = list(rotation_matrix_to_rpy(np.array(M)[:3, :3]))
-    trajGen.initial_value.value = v
+    trajGen.initial_value.value = np.array(v)
 
-    trajGen.trigger.value = 1.0
+    trajGen.trigger.value = 1
     trajGen.init(dt, 3)
     return trajGen
 
@@ -166,9 +166,9 @@ def create_pose_rpy_trajectory_generator(dt, robot, signal_name):
     pos = [M[i][3] for i in range(3)]
     euler = list(rotation_matrix_to_rpy(np.array(M)[:3, :3]))
     v = pos + euler
-    trajGen.initial_value.value = v
+    trajGen.initial_value.value = np.array(v)
 
-    trajGen.trigger.value = 1.0
+    trajGen.trigger.value = 1
     trajGen.init(dt, 6)
     return trajGen
 
@@ -316,8 +316,10 @@ def create_be_filters(robot, dt):
 
 def create_ctrl_manager(conf, dt, robot_name='robot'):
     ctrl_manager = TalosControlManager("ctrl_man")
+    ctrl_manager.add_commands()
+    ctrl_manager.add_signals()
     ctrl_manager.init(dt, robot_name)
-    ctrl_manager.u_max.value = conf.NJ * (conf.CTRL_MAX, )
+    ctrl_manager.u_max.value = np.array(conf.NJ * (conf.CTRL_MAX, ))
     # Init should be called before addCtrlMode
     # because the size of state vector must be known.
     return ctrl_manager
@@ -343,8 +345,8 @@ def create_base_estimator(robot, dt, conf, robot_name="robot"):
     # base_estimator.w_lf_in.value = conf.w_lf_in
     # base_estimator.w_rf_in.value = conf.w_rf_in
     base_estimator.set_imu_weight(conf.w_imu)
-    base_estimator.set_stiffness_right_foot(conf.K)
-    base_estimator.set_stiffness_left_foot(conf.K)
+    base_estimator.set_stiffness_right_foot(np.array(conf.K))
+    base_estimator.set_stiffness_left_foot(np.array(conf.K))
     base_estimator.set_zmp_std_dev_right_foot(conf.std_dev_zmp)
     base_estimator.set_zmp_std_dev_left_foot(conf.std_dev_zmp)
     base_estimator.set_normal_force_std_dev_right_foot(conf.std_dev_fz)
@@ -353,8 +355,8 @@ def create_base_estimator(robot, dt, conf, robot_name="robot"):
     base_estimator.set_zmp_margin_left_foot(conf.zmp_margin)
     base_estimator.set_normal_force_margin_right_foot(conf.normal_force_margin)
     base_estimator.set_normal_force_margin_left_foot(conf.normal_force_margin)
-    base_estimator.set_right_foot_sizes(conf.RIGHT_FOOT_SIZES)
-    base_estimator.set_left_foot_sizes(conf.LEFT_FOOT_SIZES)
+    base_estimator.set_right_foot_sizes(np.array(conf.RIGHT_FOOT_SIZES))
+    base_estimator.set_left_foot_sizes(np.array(conf.LEFT_FOOT_SIZES))
 
     return base_estimator
 
@@ -362,7 +364,7 @@ def create_base_estimator(robot, dt, conf, robot_name="robot"):
 def create_imu_filters(robot, dt):
     imu_filter = MadgwickAHRS('imu_filter')
     imu_filter.init(dt)
-    imu_filter.set_imu_quat([0., 1., 0., 0.])  # [w, x, y, z]
+    imu_filter.set_imu_quat(np.array([0., 1., 0., 0.]))  # [w, x, y, z]
     imu_filter.setBeta(1e-3)
     plug(robot.device_filters.acc_filter.x_filtered, imu_filter.accelerometer)  # no IMU compensation
     plug(robot.device_filters.gyro_filter.x_filtered, imu_filter.gyroscope)  # no IMU compensation
