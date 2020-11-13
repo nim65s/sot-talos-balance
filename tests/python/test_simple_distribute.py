@@ -6,7 +6,6 @@ import pinocchio as pin
 from dynamic_graph.sot_talos_balance.create_entities_utils import (create_parameter_server,
                                                                    create_simple_distribute_wrench)
 from numpy.testing import assert_almost_equal as assertApprox
-from rospkg import RosPack
 
 # --- General ---
 print("--- General ---")
