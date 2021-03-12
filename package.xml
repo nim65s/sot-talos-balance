@@ -5,7 +5,8 @@
   <version>2.0.1</version>
   <description>The sot_talos_balance package</description>
 
-  <maintainer email="gbuondon@laas.fr">Gabriele Buondonno</maintainer>
+  <maintainer email="guilhem.saurel@laas.fr">Guilhem Saurel</maintainer>
+  <author email="gbuondon@laas.fr">Gabriele Buondonno</author>
 
   <license>BSD</license>
 
