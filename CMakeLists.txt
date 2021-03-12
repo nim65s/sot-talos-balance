@@ -7,7 +7,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
 SET(PROJECT_ORG loco-3d)
 SET(PROJECT_NAME sot-talos-balance)
 SET(PROJECT_DESCRIPTION "Collection of dynamic-graph entities aimed at implementing balance control on talos.")
-SET(PROJECT_URL "https://gepgitlab.laas.fr/${PROJECT_ORG}/${PROJECT_NAME}")
+SET(PROJECT_URL "https://github.com/${PROJECT_ORG}/${PROJECT_NAME}")
 
 # Project options
 OPTION(BUILD_PYTHON_INTERFACE "Build the python bindings" ON)
